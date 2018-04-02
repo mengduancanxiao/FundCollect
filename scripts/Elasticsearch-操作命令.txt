@@ -1,0 +1,119 @@
+1、错误
+ERROR: bootstrap checks failed
+max virtual memory areas vm.max_map_count [65530] is too low, increase to at least [262144]
+
+原因分析：
+操作系统的vm.max_map_count参数设置太小导致的
+
+解决办法：
+修改配置文件:sudo gedit /etc/sysctl.conf
+添加一行:vm.max_map_count=262144
+执行:sysctl -p
+
+
+2、覆盖集群或者节点的名字
+启动Elasticsearch的时候通过命令行来指定
+./elasticsearch --cluster.name my_cluster_name --node.name my_node_name
+
+3、检查集群健康
+curl 'localhost:9200/_cat/health?v'
+curl -XGET http://localhost:9200/_cat/health?v
+
+4、获得集群中的节点列表：
+curl 'localhost:9200/_cat/nodes?v'
+curl -XGET http://localhost:9200/_cat/nodes?v
+
+5、获取索引：
+curl 'localhost:9200/_cat/indices?v'
+curl -XGET http://localhost:9200/_cat/indices?v
+
+6、创建索引
+curl -XPUT 'localhost:9200/customer?pretty'
+curl -XPUT http://localhost:9200/customer?pretty
+
+7、
+插入数据，自动生成ID：
+curl -XPOST http://172.16.3.24:9200/testdatabase/user/ -d '{"name": "John Doe","age": "18"}'
+插入数据，指定ID：
+curl -XPUT 'localhost:9200/testdatabase/user/1?pretty' -d '{"name": "Tom Doe","age": "20"}'
+更新数据，指定版本号才进行更新
+curl -XPUT 'localhost:9200/testdatabase/user/1?version=2&pretty' -d '{"name": "Tom Doe","age": "23"}'
+获取指定ID数据：
+curl -XGET http://localhost:9200/testdatabase/user/1?pretty
+
+8、删除索引
+curl -XDELETE 'localhost:9200/customer?pretty'
+curl -XDELETE http://localhost:9200/konview?pretty
+
+9、搜索
+curl -XPOST "localhost:9200/twitter/_search?pretty" -d "{\"query\":{\"match\":{\"message\":\"Hello World\"}}}"
+curl -XGET '172.16.3.24:9200/testdatabase/user/_search?q=*&pretty'
+curl -XGET 'localhost:9200/twitter/_search?q=*&pretty'
+curl -XGET http://localhost:9200/testdatabase/user/1/_source?pretty
+curl -XGET http://172.16.11.113:9200/test/_search?pretty
+curl -XGET http://localhost:9200/test/t_p_host/_search
+短语搜索：
+curl -XPOST "localhost:9200/twitter/_search?pretty" -d "{\"query\":{\"match_phrase\":{\"message\":\"Hello World\"}}}"
+curl -XPOST "localhost:9200/twitter/_search?pretty" -d "{\"query\":{\"match_phrase\":{\"message\":\"Hello tom_999\"}},\"highlight\":{\"fields\":{\"message\":{}}}}"
+
+10、检查文档是否存在
+curl -i -X HEAD http://localhost:9200/testdatabase/user/1
+
+11、使用脚本局部更新
+curl -XPOST http://localhost:9200/testdatabase/user/1/_update?pretty -d '{"script": "ctx._source.age+=1"}'
+curl -XPOST http://localhost:9200/testdatabase/user/1/_update?pretty -d '{"script": "ctx._source.birthday+=1"}'
+curl -XPOST http://localhost:9200/testdatabase/user/1/_update?pretty -d '{"script": "ctx._source+=new_tag","params":{"new_tag":"birthday"}}'
+
+12、分页查询数据：
+curl -XPOST http://localhost:9200/konview/t_p_host_cpu_temp/_search?scroll=1m&size=50&pretty -d '
+{
+    "query": { "match_all": {}},
+	"sort": { "createtime": { "order": "desc" }}
+}'
+
+13、多条件查询,并按时间倒序：
+curl -XGET http://localhost:9200/test/t_p_host/_search?scroll=1m&size=1&pretty
+{
+ "query":{
+   "bool":{
+     "must":[
+       {"match":{"host_name":"Konview服务器"}},
+       {"match":{"cpu_counts":"10"}},
+       {"match":{"process.id":"29"}}
+      ]
+   }
+ },
+ "sort": { "createtime": { "order": "desc" }}
+}
+
+14、索引别名
+创建：
+curl -XPOST http://localhost:9200/_aliases -d '
+{
+	"actions": [
+		{"add": {"index": "test", "alias": "alias"}}
+	]
+}'
+删除：
+curl -XPOST http://localhost:9200/_aliases -d '
+{
+	"actions": [
+		{"remove": {"index": "test", "alias": "alias"}}
+	]
+}'
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

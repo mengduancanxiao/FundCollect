@@ -1,0 +1,95 @@
+删除索引：
+curl -XDELETE http://localhost:9200/fund?pretty
+
+创建空的索引：
+curl -XPUT http://localhost:9200/fund?pretty
+
+添加mapping的type：
+curl -XPOST http://localhost:9200/fund/_mapping/fund_main? -d ' 
+{
+	"properties":{
+		"fundcode":{"type":"string"},
+		"name":{"type":"string"},
+		"jzrq":{"type":"date","format":"yyyy-MM-dd||epoch_millis"},
+		"dwjz":{"type":"double"},
+		"gztime":{"type":"date","format":"yyyy-MM-dd HH:mm||epoch_millis"},
+		"gsz":{"type":"double"},
+		"gszzl":{"type":"double"}
+	}
+}'
+
+查看某个type的mapping结构：
+curl -XGET http://localhost:9200/fund/_mapping/fund_main
+
+查看所有type的mapping结构：
+curl -XGET http://localhost:9200/fund/_mapping?pretty
+
+删除books的映射
+curl -XDELETE http://localhost:9200/fund/test/_mapping?pretty
+
+查询数据：
+curl -XGET http://localhost:9200/fund/_search?q=*&pretty
+
+分页查询数据：
+curl -XPOST http://localhost:9200/fund/fund_main/_search?scroll=1m&size=50&pretty -d '{"query": { "match_all": {}},"sort": { "createtime": { "order": "desc" }}}'
+
+curl -XPOST http://localhost:9200/fund/_mapping/test2? -d '
+{
+	"properties":{
+		"cicode":{"type":"string","index":"not_analyzed"},
+		"cpu":{
+			"properties":{
+				"name":{"type":"string","index":"not_analyzed"},
+				"price":{"type":"integer"}
+			}
+		}
+	}, 
+	"_source": {
+		"enabled": true
+	}
+}'
+
+curl -XPOST http://localhost:9200/fund/test/?pretty -d '{"cicode": "H-001","cpu": [{"name":"intel3"},{"name":"intel5"}]}'
+curl -XPOST http://localhost:9200/fund/test/?pretty -d '{"cicode": "H-002","cpu": [{"name":"intel4"},{"name":"intel6"}]}'
+curl -XPOST http://localhost:9200/fund/test/?pretty -d '{"cicode": "H-003","cpu": [{"name":"intel5"},{"name":"intel7"}]}'
+curl -XPOST http://localhost:9200/fund/test/?pretty -d '{"cicode": "H-004","cpu": [{"name":"intel6"},{"age":"intel8"}]}'
+
+
+curl -XPOST http://localhost:9200/test/test1/?pretty -d '{"cicode": "H-001","cpu": [{"name":"intel5"},{"price":"10"}]}'
+curl -XPOST http://localhost:9200/test/test1/?pretty -d '{"cicode": "H-002","cpu": [{"name":"intel6"},{"price":"11"}]}'
+curl -XPOST http://localhost:9200/test/test1/?pretty -d '{"cicode": "H-003","cpu": [{"name":"intel7"},{"price":"12"}]}'
+
+
+curl -XGET http://localhost:9200/fund/test/_search -d '{
+  "query": {
+    "match": { "test.cpu.name": "intel" }
+  }
+}'
+
+多条件查询：
+curl -XGET http://localhost:9200/test/t_p_host/_search?pretty
+{
+ "query":{
+   "bool":{
+     "must":[
+       {"match":{"host_name":"fund服务器"}},
+       {"match":{"cpu_counts":"10"}},
+       {"match":{"process.id":"29"}}
+      ]
+   }
+ },
+ "sort": { "createtime": { "order": "desc" }}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
