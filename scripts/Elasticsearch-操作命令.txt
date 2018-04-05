@@ -72,18 +72,15 @@ curl -XPOST http://localhost:9200/konview/t_p_host_cpu_temp/_search?scroll=1m&si
 }'
 
 13、多条件查询,并按时间倒序：
-curl -XGET http://localhost:9200/test/t_p_host/_search?scroll=1m&size=1&pretty
+curl -XGET http://localhost:9200/fund/fund_main/_search?scroll=1m&size=10&pretty
 {
  "query":{
    "bool":{
      "must":[
-       {"match":{"host_name":"Konview服务器"}},
-       {"match":{"cpu_counts":"10"}},
-       {"match":{"process.id":"29"}}
+       {"match":{"name":"易方"}}
       ]
    }
- },
- "sort": { "createtime": { "order": "desc" }}
+ }
 }
 
 14、索引别名
