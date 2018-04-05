@@ -18,7 +18,7 @@
 
     $(document).ready(function () {
         myChart = echarts.init(document.getElementById('main'));
-        show();
+        show2();
     });
 
     function show() {
@@ -38,8 +38,26 @@
             }
         });
     }
+    
+    function show2() {
+        var checkurl = "http://localhost:8080/FundCollect/index/risefallrange.do";//验证路径
+        $.ajax({
+            //async : false,
+            cache : false,
+            type : 'POST',
+            datType : "json",
+            contentType : "text/plain",
+            url : checkurl,// 请求的action路径
+            success : function(data) {
+                if (data) {
+                    option = JSON.parse(data);
+                    myChart.setOption(option);
+                }
+            }
+        });
+    }
 </script>
 <body>
-<div id="main" style="width: 99%; height: 650px;"></div>
+<div id="main" style="width: 99%; height: 630px;"></div>
 </body>
 </html>
