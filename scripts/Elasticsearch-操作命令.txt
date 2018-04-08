@@ -73,15 +73,7 @@ curl -XPOST http://localhost:9200/konview/t_p_host_cpu_temp/_search?scroll=1m&si
 
 13、多条件查询,并按时间倒序：
 curl -XGET http://localhost:9200/fund/fund_main/_search?scroll=1m&size=10&pretty
-{
- "query":{
-   "bool":{
-     "must":[
-       {"match":{"name":"易方"}}
-      ]
-   }
- }
-}
+{"query":{"bool":{"must":[{"match":{"name":"易方"}}]}}}
 
 14、索引别名
 创建：
