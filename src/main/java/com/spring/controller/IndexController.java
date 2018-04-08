@@ -20,86 +20,138 @@ import java.util.Map;
 @RequestMapping("/index")
 public class IndexController {
 
-	@RequestMapping(params = "list", method = RequestMethod.POST)
-	@ResponseBody
-	public String list(HttpServletRequest request){
-		System.out.println("------------------------------------");
-		return "test";
-	}
-	
-	@RequestMapping(params = "listget", method = RequestMethod.GET)
-	@ResponseBody
-	public String listget(HttpServletRequest request) { 
-		System.out.println("------------------------------------");
-		return "test";
-	}
-	
-	@RequestMapping(value = "/delete/{id}")
-	public String delete(@PathVariable("id") String id) {
-		//请求的URI：
-		//http://localhost:8080/FundCollect/index/delete/index.do
-		System.out.println("id ==== " + id);
-		return id;
-	}
-	
-	@RequestMapping(value = "/list2")
-	public ModelAndView list2(HttpServletRequest request) {
-		return new ModelAndView("index");
-	}
-	
-	@RequestMapping("/index")
-	public String toindex(HttpServletRequest request) {
-		return "index";
-	}
-	
-	@RequestMapping(value = "/index2")
-	public String index2(HttpServletRequest request) {
-		return "index";
-	}
-	
-	@RequestMapping(value = "/queryAll", method = RequestMethod.POST, produces="text/html;charset=UTF-8;", headers="Content-Type=text/plain")
-	@ResponseBody
-	public String queryAll() {
-		QueryELDatas query = new QueryELDatas();
-		Map<String, List<FundMain2>> map = query.searchByCondition();
-		Option option = new Option();
-		List<String> xAxis = new ArrayList<String>();
-		List<String> legendName = new ArrayList<String>();
-		List<SeriesSubtype> series = new ArrayList<SeriesSubtype>();
+    @RequestMapping(params = "list", method = RequestMethod.POST)
+    @ResponseBody
+    public String list(HttpServletRequest request) {
+        System.out.println("------------------------------------");
+        return "test";
+    }
 
-		option.title("净值走势","纯属虚构");
-		option.tooltip().trigger("axis");
+    @RequestMapping(params = "listget", method = RequestMethod.GET)
+    @ResponseBody
+    public String listget(HttpServletRequest request) {
+        System.out.println("------------------------------------");
+        return "test";
+    }
 
-		Feature feature = new Feature();
-		feature.magicType().show(true).type(null);
-		feature.saveAsImage().show(true);
-		option.toolbox().show(true).feature(feature);
+    @RequestMapping(value = "/delete/{id}")
+    public String delete(@PathVariable("id") String id) {
+        //请求的URI：
+        //http://localhost:8080/FundCollect/index/delete/index.do
+        System.out.println("id ==== " + id);
+        return id;
+    }
 
-		for (Map.Entry<String,List<FundMain2>> entry : map.entrySet()) {
-			List<FundMain2> list = entry.getValue();
+    @RequestMapping(value = "/list2")
+    public ModelAndView list2(HttpServletRequest request) {
+        return new ModelAndView("index");
+    }
 
-			legendName.add(list.get(0).getName());
-			SeriesSubtype seriesSubtype = new SeriesSubtype().name(list.get(0).getName()).type("line").smooth(false);
+    @RequestMapping("/index")
+    public String toindex(HttpServletRequest request) {
+        return "index";
+    }
 
-			List<String> dwjzdata = new ArrayList<String>();
-			for (FundMain2 fundMain2 : list) {
-				if(xAxis.size() < list.size()){
-					xAxis.add(fundMain2.getJzrq());
-			}
-				dwjzdata.add(fundMain2.getDwjz());
-			}
-			seriesSubtype.data(dwjzdata.toArray());
-			series.add(seriesSubtype);
-		}
-		option.legend().data(legendName.toArray());
-		option.xAxis().type("category").boundaryGap(false).data(xAxis.toArray());
-		option.yAxis().min("1.3").type("value");
-		option.series(series);
+    @RequestMapping(value = "/index2")
+    public String index2(HttpServletRequest request) {
+        return "index";
+    }
 
-		String json = StringUtils.option2json(option);
-		System.out.println(json);
-		return json;
-	}
-	
-	
+    @RequestMapping(value = "/queryAll", method = RequestMethod.POST, produces = "text/html;charset=UTF-8;", headers = "Content-Type=text/plain")
+    @ResponseBody
+    public String queryAll() {
+        QueryELDatas query = new QueryELDatas();
+        Map<String, List<FundMain2>> map = query.searchByCondition();
+        Option option = new Option();
+        List<String> xAxis = new ArrayList<String>();
+        List<String> legendName = new ArrayList<String>();
+        List<SeriesSubtype> series = new ArrayList<SeriesSubtype>();
+
+        option.title("净值走势", "纯属虚构");
+        option.tooltip().trigger("axis");
+
+        Feature feature = new Feature();
+        feature.magicType().show(true).type(null);
+        feature.saveAsImage().show(true);
+        option.toolbox().show(true).feature(feature);
+
+        for (Map.Entry<String, List<FundMain2>> entry : map.entrySet()) {
+            List<FundMain2> list = entry.getValue();
+
+            legendName.add(list.get(0).getName());
+            SeriesSubtype seriesSubtype = new SeriesSubtype().name(list.get(0).getName()).type("line").smooth(false);
+
+            List<String> dwjzdata = new ArrayList<String>();
+            for (FundMain2 fundMain2 : list) {
+                if (xAxis.size() < list.size()) {
+                    xAxis.add(fundMain2.getJzrq());
+                }
+                dwjzdata.add(fundMain2.getDwjz());
+            }
+            seriesSubtype.data(dwjzdata.toArray());
+            series.add(seriesSubtype);
+        }
+        option.legend().data(legendName.toArray());
+        option.xAxis().type("category").boundaryGap(false).data(xAxis.toArray());
+        option.yAxis().min("1.3").type("value");
+        option.series(series);
+
+        String json = StringUtils.option2json(option);
+        System.out.println(json);
+        return json;
+    }
+
+    @RequestMapping(value = "/risefallrange", method = RequestMethod.POST, produces = "text/html;charset=UTF-8;", headers = "Content-Type=text/plain")
+    @ResponseBody
+    public String risefallrange() {
+        QueryELDatas query = new QueryELDatas();
+        Map<String, List<FundMain2>> map = query.searchByCondition();
+        Option option = new Option();
+        List<String> xAxis = new ArrayList<String>();
+        List<String> legendName = new ArrayList<String>();
+        List<SeriesSubtype> series = new ArrayList<SeriesSubtype>();
+
+        option.title("净值涨跌幅", "纯属虚构");
+        option.tooltip().trigger("axis");
+
+        Feature feature = new Feature();
+        feature.magicType().show(true).type(null);
+        feature.saveAsImage().show(true);
+        option.toolbox().show(true).feature(feature);
+
+
+        for (Map.Entry<String, List<FundMain2>> entry : map.entrySet()) {
+            List<FundMain2> list = entry.getValue();
+            double firstvalue = 0.0;
+
+            if(firstvalue == 0.0){
+                firstvalue = Double.valueOf(list.get(0).getDwjz());
+            }
+
+            legendName.add(list.get(0).getName());
+            SeriesSubtype seriesSubtype = new SeriesSubtype().name(list.get(0).getName()).type("line").smooth(false);
+
+            List<String> dwjzdata = new ArrayList<String>();
+            for (FundMain2 fundMain2 : list) {
+                if (xAxis.size() < list.size()) {
+                    xAxis.add(fundMain2.getJzrq());
+                }
+                double range = (Double.valueOf(fundMain2.getDwjz()) - firstvalue)/firstvalue*100;
+                System.out.println("涨跌幅度：" + range);
+                dwjzdata.add(range + "");
+            }
+            seriesSubtype.data(dwjzdata.toArray());
+            series.add(seriesSubtype);
+        }
+        option.legend().data(legendName.toArray());
+        option.xAxis().type("category").boundaryGap(false).data(xAxis.toArray());
+        option.yAxis().type("value");
+        option.series(series);
+
+        String json = StringUtils.option2json(option);
+        System.out.println(json);
+        return json;
+    }
+
+
 }
