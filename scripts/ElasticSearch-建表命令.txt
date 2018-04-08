@@ -1,11 +1,11 @@
-É¾³ıË÷Òı£º
+åˆ é™¤ç´¢å¼•
 curl -XDELETE http://localhost:9200/fund?pretty
 
-´´½¨¿ÕµÄË÷Òı£º
+åˆ›å»ºç©ºçš„ç´¢å¼•ï¼š
 curl -XPUT http://localhost:9200/fund?pretty
 
-Ìí¼ÓmappingµÄtype£º
-curl -XPOST http://localhost:9200/fund/_mapping/fund_main? -d ' 
+æ·»åŠ mappingçš„typeï¼š
+curl -XPOST http://localhost:9200/fund/_mapping/fund_main? -d '
 {
 	"properties":{
 		"fundcode":{"type":"string"},
@@ -18,19 +18,19 @@ curl -XPOST http://localhost:9200/fund/_mapping/fund_main? -d '
 	}
 }'
 
-²é¿´Ä³¸ötypeµÄmapping½á¹¹£º
+æŸ¥çœ‹æŸä¸ªtypeçš„mappingç»“æ„ï¼š
 curl -XGET http://localhost:9200/fund/_mapping/fund_main
 
-²é¿´ËùÓĞtypeµÄmapping½á¹¹£º
+æŸ¥çœ‹æ‰€æœ‰typeçš„mappingç»“æ„ï¼š
 curl -XGET http://localhost:9200/fund/_mapping?pretty
 
-É¾³ıbooksµÄÓ³Éä
+åˆ é™¤booksçš„æ˜ å°„
 curl -XDELETE http://localhost:9200/fund/test/_mapping?pretty
 
-²éÑ¯Êı¾İ£º
+æŸ¥è¯¢æ•°æ®ï¼š
 curl -XGET http://localhost:9200/fund/_search?q=*&pretty
 
-·ÖÒ³²éÑ¯Êı¾İ£º
+åˆ†é¡µæŸ¥è¯¢æ•°æ®ï¼š
 curl -XPOST http://localhost:9200/fund/fund_main/_search?scroll=1m&size=50&pretty -d '{"query": { "match_all": {}},"sort": { "createtime": { "order": "desc" }}}'
 
 curl -XPOST http://localhost:9200/fund/_mapping/test2? -d '
@@ -43,7 +43,7 @@ curl -XPOST http://localhost:9200/fund/_mapping/test2? -d '
 				"price":{"type":"integer"}
 			}
 		}
-	}, 
+	},
 	"_source": {
 		"enabled": true
 	}
@@ -66,13 +66,13 @@ curl -XGET http://localhost:9200/fund/test/_search -d '{
   }
 }'
 
-¶àÌõ¼ş²éÑ¯£º
+å¤šæ¡ä»¶æŸ¥è¯¢ï¼š
 curl -XGET http://localhost:9200/test/t_p_host/_search?pretty
 {
  "query":{
    "bool":{
      "must":[
-       {"match":{"host_name":"fund·şÎñÆ÷"}},
+       {"match":{"host_name":"fundæœåŠ¡å™¨"}},
        {"match":{"cpu_counts":"10"}},
        {"match":{"process.id":"29"}}
       ]
@@ -80,16 +80,3 @@ curl -XGET http://localhost:9200/test/t_p_host/_search?pretty
  },
  "sort": { "createtime": { "order": "desc" }}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
