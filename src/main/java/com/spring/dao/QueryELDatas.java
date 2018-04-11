@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 public class QueryELDatas {
+    private static final int SIZE = 1500;
     /**
      * 通过条件查找数据
      * @param ip
@@ -37,7 +38,7 @@ public class QueryELDatas {
             hiBuilder.preTags("<h2>");
             hiBuilder.postTags("</h2>");
             hiBuilder.field("fundcode");
-            SearchResponse response = client.prepareSearch("fund").setQuery(matchQuery).addSort("jzrq", SortOrder.ASC)
+            SearchResponse response = client.prepareSearch("fund").setSize(SIZE).setQuery(matchQuery).addSort("jzrq", SortOrder.ASC)
                     .highlighter(hiBuilder).execute().actionGet();
             //获取查询结果集
             SearchHits searchHits = response.getHits();
