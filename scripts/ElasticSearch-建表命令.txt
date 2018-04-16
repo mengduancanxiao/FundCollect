@@ -24,8 +24,25 @@ curl -XGET http://localhost:9200/fund/_mapping/fund_main
 查看所有type的mapping结构：
 curl -XGET http://localhost:9200/fund/_mapping?pretty
 
+添加字段：
+方法一：
+curl -XPOST http://localhost:9200/aaa/_mapping/aaa?pretty -d '
+{
+  "properties":{
+	"birthday":{"type":"string","index":"not_analyzed"}}
+}'
+方法二：
+curl -XPOST http://localhost:9200/aaa/aaa/_mapping?pretty -d '
+{
+  "aaa": {
+    "properties": {
+      "age":{"type":"string","index":"not_analyzed"}
+    }
+  }
+}'
+
 删除books的映射
-curl -XDELETE http://localhost:9200/fund/test/_mapping?pretty
+curl -XDELETE http://localhost:9200/fund/fund_main/_mapping?pretty
 
 查询数据：
 curl -XGET http://localhost:9200/fund/_search?q=*&pretty
@@ -33,7 +50,7 @@ curl -XGET http://localhost:9200/fund/_search?q=*&pretty
 分页查询数据：
 curl -XPOST http://localhost:9200/fund/fund_main/_search?scroll=1m&size=50&pretty -d '{"query": { "match_all": {}},"sort": { "createtime": { "order": "desc" }}}'
 
-curl -XPOST http://localhost:9200/fund/_mapping/test2? -d '
+curl -XPOST http://localhost:9200/fund/_mapping/fund_main? -d '
 {
 	"properties":{
 		"cicode":{"type":"string","index":"not_analyzed"},
@@ -60,7 +77,7 @@ curl -XPOST http://localhost:9200/test/test1/?pretty -d '{"cicode": "H-002","cpu
 curl -XPOST http://localhost:9200/test/test1/?pretty -d '{"cicode": "H-003","cpu": [{"name":"intel7"},{"price":"12"}]}'
 
 
-curl -XGET http://localhost:9200/fund/test/_search -d '{
+curl -XGET http://localhost:9200/fund/fund_main/_search -d '{
   "query": {
     "match": { "test.cpu.name": "intel" }
   }
