@@ -7,6 +7,7 @@
     <groupId>fund</groupId>
     <artifactId>FundCollect</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <packaging>war</packaging>
 
     <properties>
         <!-- 主要依赖库的版本定义 -->
@@ -248,7 +249,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
-                <executions>
+                <!--<executions>
                     <execution>
                         <id>copy</id>
                         <phase>package</phase>
@@ -259,7 +260,7 @@
                             <outputDirectory>${project.build.directory}/lib</outputDirectory>
                         </configuration>
                     </execution>
-                </executions>
+                </executions>-->
             </plugin>
         </plugins>
     </build>
