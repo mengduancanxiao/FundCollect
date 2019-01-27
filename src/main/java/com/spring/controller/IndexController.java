@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServletRequest;
 import com.spring.dao.QueryELDatas;
 import model.*;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -17,7 +18,8 @@ import java.util.List;
 import java.util.Map;
 
 @Controller
-@RequestMapping("/index")
+@RequestMapping("index")
+@CrossOrigin(origins = "*", maxAge = 3600)
 public class IndexController {
 
     @RequestMapping(params = "list", method = RequestMethod.POST)
