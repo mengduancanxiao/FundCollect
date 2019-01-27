@@ -139,7 +139,7 @@ public class IndexController {
                     xAxis.add(fundMain2.getJzrq());
                 }
                 double range = (Double.valueOf(fundMain2.getDwjz()) - firstvalue)/firstvalue*100;
-                System.out.println("涨跌幅度：" + range);
+//                System.out.println("涨跌幅度：" + range);
                 dwjzdata.add(range + "");
             }
             seriesSubtype.data(dwjzdata.toArray());

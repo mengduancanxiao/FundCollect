@@ -1,116 +1,92 @@
-1¡¢´íÎó
+1ã€é”™è¯¯
 ERROR: bootstrap checks failed
 max virtual memory areas vm.max_map_count [65530] is too low, increase to at least [262144]
 
-Ô­Òò·ÖÎö£º
-²Ù×÷ÏµÍ³µÄvm.max_map_count²ÎÊıÉèÖÃÌ«Ğ¡µ¼ÖÂµÄ
+åŸå› åˆ†æï¼š
+æ“ä½œç³»ç»Ÿçš„vm.max_map_countå‚æ•°è®¾ç½®å¤ªå°å¯¼è‡´çš„
 
-½â¾ö°ì·¨£º
-ĞŞ¸ÄÅäÖÃÎÄ¼ş:sudo gedit /etc/sysctl.conf
-Ìí¼ÓÒ»ĞĞ:vm.max_map_count=262144
-Ö´ĞĞ:sysctl -p
+è§£å†³åŠæ³•ï¼š
+ä¿®æ”¹é…ç½®æ–‡ä»¶:sudo gedit /etc/sysctl.conf
+æ·»åŠ ä¸€è¡Œ:vm.max_map_count=262144
+æ‰§è¡Œ:sysctl -p
 
 
-2¡¢¸²¸Ç¼¯Èº»òÕß½ÚµãµÄÃû×Ö
-Æô¶¯ElasticsearchµÄÊ±ºòÍ¨¹ıÃüÁîĞĞÀ´Ö¸¶¨
+2ã€è¦†ç›–é›†ç¾¤æˆ–è€…èŠ‚ç‚¹çš„åå­—
+å¯åŠ¨Elasticsearchçš„æ—¶å€™é€šè¿‡å‘½ä»¤è¡Œæ¥æŒ‡å®š
 ./elasticsearch --cluster.name my_cluster_name --node.name my_node_name
 
-3¡¢¼ì²é¼¯Èº½¡¿µ
+3ã€æ£€æŸ¥é›†ç¾¤å¥åº·
 curl 'localhost:9200/_cat/health?v'
 curl -XGET http://localhost:9200/_cat/health?v
 
-4¡¢»ñµÃ¼¯ÈºÖĞµÄ½ÚµãÁĞ±í£º
+4ã€è·å¾—é›†ç¾¤ä¸­çš„èŠ‚ç‚¹åˆ—è¡¨ï¼š
 curl 'localhost:9200/_cat/nodes?v'
 curl -XGET http://localhost:9200/_cat/nodes?v
 
-5¡¢»ñÈ¡Ë÷Òı£º
+5ã€è·å–ç´¢å¼•ï¼š
 curl 'localhost:9200/_cat/indices?v'
 curl -XGET http://localhost:9200/_cat/indices?v
 
-6¡¢´´½¨Ë÷Òı
+6ã€åˆ›å»ºç´¢å¼•
 curl -XPUT 'localhost:9200/customer?pretty'
 curl -XPUT http://localhost:9200/customer?pretty
 
-7¡¢
-²åÈëÊı¾İ£¬×Ô¶¯Éú³ÉID£º
+7ã€
+æ’å…¥æ•°æ®ï¼Œè‡ªåŠ¨ç”ŸæˆIDï¼š
 curl -XPOST http://172.16.3.24:9200/testdatabase/user/ -d '{"name": "John Doe","age": "18"}'
-²åÈëÊı¾İ£¬Ö¸¶¨ID£º
+æ’å…¥æ•°æ®ï¼ŒæŒ‡å®šIDï¼š
 curl -XPUT 'localhost:9200/testdatabase/user/1?pretty' -d '{"name": "Tom Doe","age": "20"}'
-¸üĞÂÊı¾İ£¬Ö¸¶¨°æ±¾ºÅ²Å½øĞĞ¸üĞÂ
+æ›´æ–°æ•°æ®ï¼ŒæŒ‡å®šç‰ˆæœ¬å·æ‰è¿›è¡Œæ›´æ–°
 curl -XPUT 'localhost:9200/testdatabase/user/1?version=2&pretty' -d '{"name": "Tom Doe","age": "23"}'
-»ñÈ¡Ö¸¶¨IDÊı¾İ£º
+è·å–æŒ‡å®šIDæ•°æ®ï¼š
 curl -XGET http://localhost:9200/testdatabase/user/1?pretty
 
-8¡¢É¾³ıË÷Òı
+8ã€åˆ é™¤ç´¢å¼•
 curl -XDELETE 'localhost:9200/customer?pretty'
 curl -XDELETE http://localhost:9200/konview?pretty
 
-9¡¢ËÑË÷
+9ã€æœç´¢
 curl -XPOST "localhost:9200/twitter/_search?pretty" -d "{\"query\":{\"match\":{\"message\":\"Hello World\"}}}"
 curl -XGET '172.16.3.24:9200/testdatabase/user/_search?q=*&pretty'
 curl -XGET 'localhost:9200/twitter/_search?q=*&pretty'
 curl -XGET http://localhost:9200/testdatabase/user/1/_source?pretty
 curl -XGET http://172.16.11.113:9200/test/_search?pretty
 curl -XGET http://localhost:9200/test/t_p_host/_search
-¶ÌÓïËÑË÷£º
+çŸ­è¯­æœç´¢ï¼š
 curl -XPOST "localhost:9200/twitter/_search?pretty" -d "{\"query\":{\"match_phrase\":{\"message\":\"Hello World\"}}}"
 curl -XPOST "localhost:9200/twitter/_search?pretty" -d "{\"query\":{\"match_phrase\":{\"message\":\"Hello tom_999\"}},\"highlight\":{\"fields\":{\"message\":{}}}}"
 
-10¡¢¼ì²éÎÄµµÊÇ·ñ´æÔÚ
+10ã€æ£€æŸ¥æ–‡æ¡£æ˜¯å¦å­˜åœ¨
 curl -i -X HEAD http://localhost:9200/testdatabase/user/1
 
-11¡¢Ê¹ÓÃ½Å±¾¾Ö²¿¸üĞÂ
+11ã€ä½¿ç”¨è„šæœ¬å±€éƒ¨æ›´æ–°
 curl -XPOST http://localhost:9200/testdatabase/user/1/_update?pretty -d '{"script": "ctx._source.age+=1"}'
 curl -XPOST http://localhost:9200/testdatabase/user/1/_update?pretty -d '{"script": "ctx._source.birthday+=1"}'
 curl -XPOST http://localhost:9200/testdatabase/user/1/_update?pretty -d '{"script": "ctx._source+=new_tag","params":{"new_tag":"birthday"}}'
 
-12¡¢·ÖÒ³²éÑ¯Êı¾İ£º
+12ã€åˆ†é¡µæŸ¥è¯¢æ•°æ®ï¼š
 curl -XPOST http://localhost:9200/konview/t_p_host_cpu_temp/_search?scroll=1m&size=50&pretty -d '
 {
     "query": { "match_all": {}},
 	"sort": { "createtime": { "order": "desc" }}
 }'
 
-13¡¢¶àÌõ¼ş²éÑ¯,²¢°´Ê±¼äµ¹Ğò£º
+13ã€å¤šæ¡ä»¶æŸ¥è¯¢,å¹¶æŒ‰æ—¶é—´å€’åºï¼š
 curl -XGET http://localhost:9200/fund/fund_main/_search?scroll=1m&size=10&pretty
-{
- "query":{
-   "bool":{
-     "must":[
-       {"match":{"name":"Ò×·½"}}
-      ]
-   }
- }
-}
+{"query":{"bool":{"must":[{"match":{"name":"æ˜“æ–¹"}}]}},"sort": { "createtime": { "order": "desc" }}
 
-14¡¢Ë÷Òı±ğÃû
-´´½¨£º
+14ã€ç´¢å¼•åˆ«å
+åˆ›å»ºï¼š
 curl -XPOST http://localhost:9200/_aliases -d '
 {
 	"actions": [
 		{"add": {"index": "test", "alias": "alias"}}
 	]
 }'
-É¾³ı£º
+åˆ é™¤ï¼š
 curl -XPOST http://localhost:9200/_aliases -d '
 {
 	"actions": [
 		{"remove": {"index": "test", "alias": "alias"}}
 	]
 }'
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
